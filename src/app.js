@@ -11,13 +11,12 @@ app.use(cors());
 
 // MUST BE BEFORE ROUTES
 app.use(express.json());
+
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-// simple form to manually register users for testing
-app.get("/register", (req, res) => {
-	res.sendFile(path.resolve(__dirname, "views", "register.html"));
-});
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "client/build")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/protected", protectedRoutes);
