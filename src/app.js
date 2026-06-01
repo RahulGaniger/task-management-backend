@@ -5,19 +5,28 @@ const path = require("path");
 const authRoutes = require("./routes/authRoutes");
 const protectedRoutes = require("./routes/protectedRoutes");
 const taskRoutes = require("./routes/taskRoutes");
+
 const app = express();
 
-app.use(cors());
+// CORS
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://task-management-frontend-ipyt.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 
 // MUST BE BEFORE ROUTES
 app.use(express.json());
-
-// parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from the React app
+// Static files
 app.use(express.static(path.join(__dirname, "client/build")));
 
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/protected", protectedRoutes);
 app.use("/api/tasks", taskRoutes);
